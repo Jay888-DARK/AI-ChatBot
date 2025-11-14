@@ -1,0 +1,11 @@
+import google.generativeai as genai
+
+
+genai.configure(api_key="AIzaSyDMWjtHM19Ncp0Kll2v33cak6L_dVhvJwQ")
+
+try:
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    response = model.generate_content("Hello! Can you respond?")
+    print("✅ API key works! Response:", response.text[:100])
+except Exception as e:
+    print("❌ API key test failed:", e)
