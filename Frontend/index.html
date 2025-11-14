@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI ChatBot</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: auto; padding: 20px; }
+        #chat { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: scroll; }
+        #userInput { width: 80%; padding: 10px; }
+        #sendBtn { padding: 10px; }
+        .user { color: blue; }
+        .bot { color: green; }
+    </style>
+</head>
+<body>
+    <h2>AI Research ChatBot</h2>
+    <div id="chat"></div>
+    <input type="text" id="userInput" placeholder="Type your topic..." />
+    <button id="sendBtn">Send</button>
+
+    <script>
+        const chatDiv = document.getElementById("chat");
+        const input = document.getElementById("userInput");
+        const btn = document.getElementById("sendBtn");
+
+        btn.addEventListener("click", async () => {
+            const query = input.value.trim();
+            if (!query) return;
+
+            // Show user's message
+            chatDiv.innerHTML += `<div class="user"><b>You:</b> ${query}</div>`;
+            input.value = "";
+
+            // Call backend API
+            try {
+                const response = await fetch(`/research?query=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                chatDiv.innerHTML += `<div class="bot"><b>Bot:</b> ${data.summary || JSON.stringify(data)}</div>`;
+                chatDiv.scrollTop = chatDiv.scrollHeight;
+            } catch (err) {
+                chatDiv.innerHTML += `<div class="bot"><b>Bot:</b> Error: ${err.message}</div>`;
+            }
+        });
+
+        input.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") btn.click();
+        });
+    </script>
+</body>
+</html>
