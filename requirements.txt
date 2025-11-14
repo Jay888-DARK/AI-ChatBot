@@ -5,3 +5,7 @@ langchain-google-genai
 python-dotenv
 pydantic
 duckduckgo-search
+uvicore
+fastapi
+uvicorn
+langchain
